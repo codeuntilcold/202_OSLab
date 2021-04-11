@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 {
     // Requirements: read non-negative numbers from "numbers.txt"
     // and print out the number of numbers divisible by 3, 7, 11
-    // Number is less than 10^79
+    // Number is less than 10^80
 
     FILE* fp = fopen(argv[1], "r");
     if (!fp) {
@@ -69,11 +69,12 @@ int main(int argc, char** argv)
 
     char number[80];
     int count = 0;
-    pid_t child_1 = fork();
 
+    pid_t child_1 = fork();
     if (child_1 < 0) 
     {
         perror("Fork error");
+        exit(1);
     }
     else if (child_1 == 0) 
     {
@@ -85,14 +86,14 @@ int main(int argc, char** argv)
         else if (child_2 == 0) {
             // In child_2
             while (1) {
-            int len = readline(number, fp);
-            if (is_div_3(number)) {
-                count++;
+                int len = readline(number, fp);
+                if (is_div_3(number)) {
+                    count++;
+                }
+                if (len == EOF)
+                    break;
             }
-            if (len == EOF)
-                break;
-        }
-        printf("%d\n", count);
+            printf("%d\n", count);
         }
         else {
             // In child_1
@@ -124,14 +125,6 @@ int main(int argc, char** argv)
         }
         printf("%d\n", count);
     }
-
-    // do {
-    //     fgets(number, 255, fp);
-    //     printf("%s\n", number);
-    //     sleep(1);
-    // }
-    // while (number);
-
 
     fclose(fp);
 }
