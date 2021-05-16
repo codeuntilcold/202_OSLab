@@ -1,4 +1,5 @@
 #include <sys/types.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -86,7 +87,7 @@ int main(int argc, char** argv)
 
     if (child_pid == -1) { perror("fork"); exit(1); }
     if (child_pid == 0) {
-        signal(SIGUSR1, parentdone);    // Set up signal
+        signal(SIGUSR1, );    // Set up signal
         sigemptyset(&mask);             // Set up mask to
         sigaddset(&mask, SIGUSR1);      // temporarily block
 
